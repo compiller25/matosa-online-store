@@ -189,31 +189,32 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       {/* Category filter chips */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.catRow}
-        contentContainerStyle={styles.catContent}
-      >
-        {categories.map((cat) => {
-          const active = selectedCategory === cat.key;
-          return (
-            <Pressable
-              key={cat.key ?? "all"}
-              onPress={() => setSelectedCategory(cat.key)}
-              style={({ pressed }) => [
-                styles.catChip(t),
-                active && styles.catChipActive(t),
-                pressed && styles.pressed,
-              ]}
-            >
-              <Text style={[styles.catChipText(t), active && styles.catChipTextActive]}>
-                {i18n(cat.labelKey)}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
+      <View style={styles.catContainer(t)}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.catContent}
+        >
+          {categories.map((cat) => {
+            const active = selectedCategory === cat.key;
+            return (
+              <Pressable
+                key={cat.key ?? "all"}
+                onPress={() => setSelectedCategory(cat.key)}
+                style={({ pressed }) => [
+                  styles.catChip(t),
+                  active && styles.catChipActive(t),
+                  pressed && styles.pressed,
+                ]}
+              >
+                <Text style={[styles.catChipText(t), active && styles.catChipTextActive]}>
+                  {i18n(cat.labelKey)}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+      </View>
 
       <FlatList
         key={`grid-${numColumns}`}
@@ -395,27 +396,41 @@ const styles = StyleSheet.create({
   btnOutOfStock: (t) => ({
     backgroundColor: t.colors.textMuted,
   }),
-  catRow: {
+  catContainer: (t) => ({
     marginBottom: 16,
-  },
+    marginHorizontal: -16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: t.mode === "light" ? "#F5F3EE" : "#161411",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: t.colors.border,
+  }),
   catContent: {
     gap: 10,
-    paddingRight: 16,
   },
   catChip: (t) => ({
-    paddingHorizontal: 18,
-    paddingVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderRadius: 24,
-    backgroundColor: t.mode === "light" ? "#F3F4F6" : "#1A2421",
+    backgroundColor: t.mode === "light" ? "#FFFFFF" : "#26221B",
     borderWidth: 1,
     borderColor: t.colors.border,
+    elevation: 2,
+    shadowColor: t.colors.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   }),
   catChipActive: (t) => ({
     backgroundColor: t.colors.primary,
     borderColor: t.colors.primary,
+    elevation: 4,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   }),
   catChipText: (t) => ({
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: "600",
     color: t.colors.text,
   }),
