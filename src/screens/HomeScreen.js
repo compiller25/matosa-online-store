@@ -170,8 +170,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={[styles.container(t), { backgroundColor: t.colors.bg }]}>
-      <View style={styles.header}>
-        <Text style={styles.h1(t)}>{i18n("homeTitle")}</Text>
+      <View style={styles.headerWrap}>
         <Text style={styles.subtitle(t)}>
           {i18n("homeSubtitle")}
         </Text>
@@ -241,18 +240,11 @@ const styles = StyleSheet.create({
     paddingTop: t.spacing.lg,
     paddingHorizontal: t.spacing.md,
   }),
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  headerWrap: {
     marginBottom: 24,
   },
-  h1: (t) => ({
-    ...t.typography.h2,
-    color: t.colors.text,
-  }),
   subtitle: (t) => ({
-    ...t.typography.bodySmall,
+    ...t.typography.body,
     color: t.colors.textMuted,
   }),
   searchBar: (t) => ({
