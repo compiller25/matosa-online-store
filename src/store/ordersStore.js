@@ -80,13 +80,6 @@ const useOrdersStore = create(
 
         const [title, body] = notifs[status] ?? ["Order Update", `Status: ${status}`];
         sendLocalNotification(title, body);
-
-        // Auto-dismiss canceled orders from the UI after 5 seconds
-        if (status === "canceled") {
-          setTimeout(() => {
-            get().removeOrder(orderId);
-          }, 5000);
-        }
       },
 
       removeOrder: (orderId) =>

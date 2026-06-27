@@ -155,6 +155,8 @@ export const translations = {
     callDriver: "Piga Simu",
     openWhatsApp: "Fungua WhatsApp",
     deleteOrder: "Futa Oda",
+    deleteOrderConfirm: "Una uhakika unataka kufuta oda hii?",
+    yesDelete: "Ndiyo, Futa",
 
     // Profile
     appearance: "Muonekano",
@@ -373,6 +375,8 @@ export const translations = {
     callDriver: "Call Driver",
     openWhatsApp: "Open WhatsApp",
     deleteOrder: "Delete Order",
+    deleteOrderConfirm: "Are you sure you want to delete this order?",
+    yesDelete: "Yes, Delete",
 
     // Profile
     appearance: "Appearance",

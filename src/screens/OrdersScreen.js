@@ -28,6 +28,7 @@ export default function OrdersScreen({ navigation }) {
 
   const orders = useOrdersStore((s) => s.orders);
   const updateStatus = useOrdersStore((s) => s.updateStatus);
+  const removeOrder = useOrdersStore((s) => s.removeOrder);
   const addToCart = useCartStore((s) => s.addToCart);
 
   const handleReorder = (order) => {
@@ -160,16 +161,37 @@ export default function OrdersScreen({ navigation }) {
         )}
 
         {(item.status === "delivered" || item.status === "canceled") && (
-          <Pressable
-            onPress={() => handleReorder(item)}
-            style={({ pressed }) => [
-              styles.btn(t),
-              { flex: 1, backgroundColor: t.colors.success ?? "#16A34A" },
-              pressed && styles.pressed,
-            ]}
-          >
-            <Text style={styles.btnText}>{tr("reorder")}</Text>
-          </Pressable>
+          <>
+            <Pressable
+              onPress={() => handleReorder(item)}
+              style={({ pressed }) => [
+                styles.btn(t),
+                { flex: 1, backgroundColor: t.colors.success ?? "#16A34A" },
+                pressed && styles.pressed,
+              ]}
+            >
+              <Text style={styles.btnText}>{tr("reorder")}</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                Alert.alert(tr("deleteOrder"), tr("deleteOrderConfirm"), [
+                  { text: tr("no"), style: "cancel" },
+                  {
+                    text: tr("yesDelete"),
+                    style: "destructive",
+                    onPress: () => removeOrder(item.id),
+                  },
+                ]);
+              }}
+              style={({ pressed }) => [
+                styles.btn(t),
+                { flex: 0.6, backgroundColor: "#EF4444" },
+                pressed && styles.pressed,
+              ]}
+            >
+              <Ionicons name="trash-outline" size={18} color="#FFF" />
+            </Pressable>
+          </>
         )}
       </View>
     </View>
