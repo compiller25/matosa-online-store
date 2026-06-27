@@ -1,0 +1,210 @@
+──────────────────────────────────────────────────────────────────────────────────────
+  
+  What the App Actually Is Right Now
+  
+  A local grocery ordering app for your street/neighborhood in Tanzania that:
+  
+  - Shows a static product list → cart → WhatsApp checkout
+  - Has i18n (Swahili + English), dark/light theme, local notification stubs
+  - Orders and cart reset every time the app closes (no persistence)
+  - Has no backend, no real tracking, no admin panel, no payment integration
+  
+  ──────────────────────────────────────────────────────────────────────────────────────
+  
+  The Real Problem You're Solving
+  
+  People in your area can't easily get fresh vegetables because the market is far. Your
+  app needs to make a neighbor feel confident ordering from you with these assurances:
+  
+  1. "My order will actually arrive" — reliable order confirmation + status
+  2. "I can pay without carrying cash" — mobile money (this is Tanzania,
+  M-Pesa/TigoPesa/Airtel are king)
+  3. "I can trust this vendor" — business identity, reviews, clear pricing
+  4. "I know what's available today" — live stock, not a static list
+  
+  ──────────────────────────────────────────────────────────────────────────────────────
+  
+  Upgrade Roadmap (Tanzania-Specific)
+  
+  I've broken this into 3 phases — go-to-market, growth, and scale.
+  
+  ─────────────────────────────────────────────────────────────────────────────────────
+  
+  Phase 1 — Launch Ready (Fix the Broken Fundamentals)
+  
+  These must be done before going to market. Without them the app feels untrustworthy.
+  
+  1.1 — Data Persistence
+  
+  Cart, orders, and UI preferences (language, theme) are lost on every app restart.
+  @react-native-async-storage/async-storage is already installed. Zustand's persist
+   middleware just needs to be wired in. This is a one-time 20-minute fix across 3
+  stores.
+  
+  1.2 — Fix the Missing App Icon
+  
+  app.json points to ./assets/icon.png which doesn't exist. EAS build will fail
+  immediately. Rename logo.png → icon.png or update the reference.
+  
+  1.3 — Remove the Fake Live Tracking
+  
+  The map shows a fake 🛵 driver that doesn't exist. This will destroy trust the first
+  time a real customer sees it and wonders why the "driver" never moves. Replace it with
+  a simple order status timeline (New → Confirmed → Out for Delivery → Delivered) until
+  you have real delivery data.
+  
+  1.4 — Fix the useState Bug in HomeScreen
+  
+  useState(() => { fetchProducts() }) runs on every render. Change it to useEffect(() =>
+  { fetchProducts() }, []). Small bug but it could cause performance problems at scale.
+  
+  1.5 — Compress Large Images
+  
+  bg001.jpg (2.8MB) and background.jpg (1.7MB) make the app feel slow. Compress to under
+  200KB. This directly affects first impressions for users on slow mobile data in
+  Tanzania.
+  
+  ──────────────────────────────────────────────────────────────────────────────────────
+  
+  Phase 2 — Product-Market Fit (What Makes It Actually Solve the Problem)
+  
+  2.1 — Mobile Money Payment (HIGHEST ROI)
+  
+  In Tanzania, cash on delivery has friction — the customer has to have exact change,
+  the rider has to carry change. M-Pesa, TigoPesa, and Airtel Money solve this
+  completely. The simplest implementation without a payment gateway:
+  
+  - Add payment option buttons: M-Pesa, TigoPesa, Airtel Money, Cash on Delivery
+  - When customer selects mobile money, show your business Lipa Namba (business till
+  number) inside the app
+  - Add a "Payment Reference" field they fill after paying
+  - That reference goes into the WhatsApp order message so you can verify
+  - This costs you nothing to implement and works immediately without any API
+  
+  When you grow, you can upgrade to AzamPay or Selcom (both Tanzanian payment gateways
+  with M-Pesa/TigoPesa/Airtel APIs).
+  
+  2.2 — Real Admin Dashboard
+  
+  Right now you have no way to manage your business from within the app. You need to see
+  and act on incoming orders. The admin panel needs:
+  
+  - A PIN-locked admin screen (simple, no backend required)
+  - List of all orders with status controls (New → Confirmed → Out for Delivery →
+  Delivered)
+  - Inventory toggle per product (In Stock / Out of Stock)
+  - Simple daily sales summary (total orders, total TZS)
+  
+  This can be fully local (no backend) at first using AsyncStorage shared state.
+  
+  2.3 — Order Confirmation Flow (Fixes the #1 Customer Anxiety)
+  
+  Right now the flow is: customer sends WhatsApp → nothing happens on the app side. The
+  customer has no idea if their order was received. Add:
+  
+  - An order confirmation screen that clearly shows "Order Sent, waiting for
+  confirmation"
+  - When you (admin) mark an order as "Confirmed" in the admin panel, the customer gets
+  a local notification
+  
+  2.4 — Stock/Availability Status per Product
+  
+  The product list is static. If you run out of Mchicha today, customers still order it.
+  Add an inStock: true/false flag per product, controlled from the admin panel. Show
+  "Out of Stock" grayed out on the product card. This is purely local state — no backend
+  needed yet.
+  
+  2.5 — Reorder Feature
+  
+  Local repeat customers (your target market) order the same items every week. A
+  "Reorder" button on the Orders screen that dumps a previous order back into the cart
+  removes all friction for repeat purchases.
+  
+  2.6 — Privacy Policy Page
+  
+  Google Play will reject your submission without one because you collect GPS location.
+  A simple in-app screen explaining what data you collect (name, phone, location for
+  delivery) is sufficient for initial submission.
+  
+  ──────────────────────────────────────────────────────────────────────────────────────
+  
+  Phase 3 — Scale (When You Have Regular Customers)
+  
+  3.1 — Firebase/Supabase Backend
+  
+  Once you have consistent daily orders, move data off-device so:
+  
+  - Customers see real-time stock updates
+  - You can manage orders from your phone without the app being open
+  - Order history survives if a customer reinstalls the app
+  - Multiple delivery riders can see assigned orders
+  
+  Recommendation for Tanzania: Firebase (Google) — works reliably on
+  Safaricom/Vodacom/Airtel data, generous free tier, no server management. Supabase is
+  an alternative if you prefer SQL.
+  
+  3.2 — Delivery Zone Map + Dynamic Delivery Fees
+  
+  Draw your actual delivery coverage area on a map. When a customer pins their location,
+  automatically calculate if they're in your zone and what the fee is. This prevents
+  disputes and sets proper expectations.
+  
+  3.3 — Push Notifications via FCM
+  
+  When you confirm an order as admin, the customer gets a real push notification (not
+  just a local one). Requires Firebase. This is what makes customers feel like they're
+  using a professional service.
+  
+  3.4 — Product Categories + Search Improvement
+  
+  As your catalog grows beyond 11 items, add proper filtering: Leafy Greens,
+  Tomatoes/Onions/Spices, Seasonal. The search exists but there's no category filter
+  yet.
+  
+  3.5 — Ratings & Simple Reviews
+  
+  After delivery is marked complete, prompt the customer to rate (1-5 stars). This
+  builds social proof for word-of-mouth growth in the neighborhood.
+  
+  ──────────────────────────────────────────────────────────────────────────────────────
+  
+  Recommended Build Order
+  
+  Week 1  → Phase 1 (blockers) + Mobile Money UI (no API)
+  Week 2  → Admin dashboard (local, PIN-locked)
+  Week 3  → Stock status + Reorder + Order confirmation screen
+  Week 4  → Privacy policy + Play Store submission
+  Month 2 → Firebase backend once you have 10+ daily orders
+  Month 3 → AzamPay/Selcom integration for real mobile money processing
+  
+  ──────────────────────────────────────────────────────────────────────────────────────
+  
+  Technology Choices (Tanzania Context)
+  
+  ┌──────────────────────┬──────────────────────┬───────────────────────────────────┐
+  │ Need                 │ Recommendation       │ Why                               │
+  ├──────────────────────┼──────────────────────┼───────────────────────────────────┤
+  │ Backend              │ Firebase Firestore   │ Reliable on TZ mobile data, free  │
+  │                      │                      │ to start                          │
+  ├──────────────────────┼──────────────────────┼───────────────────────────────────┤
+  │ Payment              │ AzamPay or Selcom    │ Both support M-Pesa, TigoPesa,    │
+  │                      │ API                  │ Airtel Money, TZ-based            │
+  ├──────────────────────┼──────────────────────┼───────────────────────────────────┤
+  │ Maps                 │ OpenStreetMap        │ Free, works offline-ish, no       │
+  │                      │ (already using it)   │ billing surprises                 │
+  ├──────────────────────┼──────────────────────┼───────────────────────────────────┤
+  │ Hosting admin web    │ Vercel free tier     │ Fast, free for small projects     │
+  │ panel (future)       │                      │                                   │
+  ├──────────────────────┼──────────────────────┼───────────────────────────────────┤
+  │ Analytics            │ Firebase Analytics   │ Free, built into Firebase         │
+  ├──────────────────────┼──────────────────────┼───────────────────────────────────┤
+  │ Crash reporting      │ Sentry free tier     │ Best crash reporting, free for    │
+  │                      │                      │ small apps                        │
+  └──────────────────────┴──────────────────────┴───────────────────────────────────┘
+  
+  ──────────────────────────────────────────────────────────────────────────────────────
+  
+  Would you like me to build a detailed implementation plan for any specific phase? I'd
+  suggest starting with Phase 1 + the mobile money payment UI as your first sprint — it
+  fixes the critical bugs and adds the single most impactful feature for your Tanzanian
+  market.

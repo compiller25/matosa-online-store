@@ -1,0 +1,57 @@
+1. No data persistence — everything resets on app restart
+  
+  - Cart, orders, and profile are in-memory only. Closing the app loses everything.
+  - Fix: Wrap Zustand stores with zustand/middleware/persist +
+  @react-native-async-storage/async-storage (already installed).
+
+   2. Push notifications token is fetched but never sent anywhere
+  
+  - registerForPushNotificationsAsync() gets the token, then throws it away. Nobody can
+  actually push to users.
+  - Fix: Save the token and send it to your backend/WhatsApp/Firestore so you can
+  actually notify customers.
+
+   3. Fake live tracking
+  
+  - OrderTrackingScreen shows a hardcoded 🛵 marker offset by +0.005 degrees. The driver
+  is not real. "Last Updated: Just Now" is always static.
+  - Fix: Either hide the driver marker entirely until you have real delivery tracking,
+  or make it clear it's estimated.
+
+  
+  4. productsStore.fetchProducts() is a no-op
+  
+  - The fetch function simulates an API call and does nothing — products always come
+  from the static vegetables.js file. Any product changes require a new app release.
+  - Fix: Connect to a real backend (Firestore, Supabase, or even a Google Sheet via
+  API), or at minimum remove the fake loading spinner.
+  
+  5. Admin dashboard referenced but missing
+  
+  - AdminDashboardScreen.js is listed in the README but not in the src/screens/
+  directory and not in the navigator. There's no way to manage orders or inventory.
+  
+  6. app.json references a missing file
+  
+  - "icon": "./assets/icon.png" — there is no icon.png in assets (only logo.png). This
+  will break the EAS build.
+
+  
+  To test on your phone:
+  
+  npx expo start
+  
+  Key things to verify:
+  
+  - Profile tab → tap "Admin Dashboard" → enter PIN 1234 → manage orders/stock
+  - Checkout → tap M-Pesa → see Lipa Namba + reference field appear
+  - Mark an order delivered → Orders tab → "Reorder" button appears
+  - Mark a product out of stock in Admin → see it grayed out in the shop
+  - Profile tab → tap "Read Privacy Policy"
+  
+  Important: Change the placeholder "5270XXX" Lipa Namba in CheckoutScreen.js to your real
+  M-Pesa/TigoPesa/Airtel till number before going to market.
+ 
+ 
+ 
+ 

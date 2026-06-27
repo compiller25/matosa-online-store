@@ -1,50 +1,39 @@
-# Welcome to your Expo app 👋
+# Sean Vegie Store (Expo)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A lightweight mobile storefront for ordering vegetables with a cart + WhatsApp checkout flow.
 
-## Get started
+## What’s included
 
-1. Install dependencies
+- Product grid (images + pricing) in `src/screens/HomeScreen.js`
+- Cart with totals and checkout navigation in `src/screens/CartScreen.js`
+- Checkout form that opens WhatsApp with a prefilled order message in `src/screens/CheckoutScreen.js`
+- Light/dark/system theme toggle via Zustand in `src/store/uiStore.js`
+- Basic “Admin Dashboard” UI placeholder in `src/screens/AdminDashboardScreen.js`
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Quick start
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Configure WhatsApp ordering
 
-## Learn more
+Set your business WhatsApp number (no `+`, no spaces) in `src/utils/whatsapp.js` (`BUSINESS_WHATSAPP`).
 
-To learn more about developing your project with Expo, look at the following resources:
+## Tech stack
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Expo + React Native
+- React Navigation (bottom tabs + stack)
+- Zustand for app state
 
-## Join the community
+## Project structure
 
-Join our community of developers creating universal apps.
+- `src/navigation/RootNavigator.js` — tabs + stacks
+- `src/data/vegetables.js` — sample catalog data
+- `src/store/cartStore.js` — cart logic + totals
+- `src/theme/theme.js` — theme tokens
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Product polish checklist
+
+See `docs/MARKET_READY_CHECKLIST.md` for a practical roadmap to make this app feel premium and market-ready.

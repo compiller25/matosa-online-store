@@ -1,0 +1,206 @@
+================================================================================
+                    MATOSA ONLINE SHOPPING — TECHNICAL PROPOSAL
+================================================================================
+
+1. PROJECT OVERVIEW
+────────────────────────────────────────────────────────────────────────────────
+
+  Name:          Matosa Online Shopping (matosa-online-shop)
+  Type:          React Native / Expo mobile app
+  Market:        Vegetable home delivery in Dar es Salaam, Tanzania
+  Audience:      Neighbors in the Matosa area (Kilimani, Dar es Salaam)
+  Currency:      TZS (Tanzanian shillings)
+  Languages:     Kiswahili + English
+  Current state: Functional MVP — version 1.2.0
+
+  Tech stack:
+  ┌──────────────┬──────────────────────────────────────────────────────────┐
+  │ Framework    │ Expo ~54.0.34, React Native 0.81.5, React 19.1.0        │
+  │ Language     │ JavaScript (with unused .ts/.tsx files)                  │
+  │ Navigation   │ React Navigation (Drawer + Bottom Tabs + Stack)          │
+  │ State        │ Zustand 5 with AsyncStorage persistence                  │
+  │ Maps         │ OpenStreetMap + Leaflet via WebView (expo-location)      │
+  │ Payments     │ M-Pesa, TigoPesa, Airtel Money (reference only)         │
+  │ Checkout     │ Order via WhatsApp (wa.me)                              │
+  │ Notifications│ expo-notifications (local only, no Firebase)             │
+  │ Backend      │ NONE — fully offline/local                              │
+  └──────────────┴──────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────────────────────────
+
+2. CURRENT STATE DIAGNOSIS
+────────────────────────────────────────────────────────────────────────────────
+
+  2.1 WHAT WORKS WELL
+  ────────────────────────────────────────────────────────────────────────────
+  ✔ Product catalog of 11 items with prices and images
+  ✔ Shopping cart with persistence (AsyncStorage + Zustand persist)
+  ✔ Orders with persistence and status tracking
+  ✔ Complete checkout with form validation
+  ✔ WhatsApp integration to receive orders
+  ✔ Admin panel protected with PIN (admin: 1234)
+  ✔ Stock management from admin panel
+  ✔ Delivery zone detection with interactive map
+  ✔ Delivery fee calculation by zone
+  ✔ Full internationalization (SW/EN)
+  ✔ Light/dark/system theme
+  ✔ Local notifications on order status change
+  ✔ User profile saved in AsyncStorage
+  ✔ Mobile payment options (M-Pesa, TigoPesa, Airtel Money)
+  ✔ Privacy policy for Google Play compliance
+  ✔ "Reorder" function for past orders
+  ✔ Product search by name
+  ✔ Location picker map with Leaflet
+
+  2.2 CRITICAL ISSUES (BLOCKERS)
+  ────────────────────────────────────────────────────────────────────────────
+  ✗ STATE BUG: HomeScreen.js — useState with fetchProducts() runs on every
+    render (not a crash but inefficient)
+  ✗ ICON: assets/icon.png exists but may not be optimal for EAS build
+  ✗ LARGE IMAGES: bg001.jpg (2.8MB) and background.jpg (1.7MB) slow down
+    the app on mobile data
+
+  2.3 STRATEGIC GAPS
+  ────────────────────────────────────────────────────────────────────────────
+  ✗ No backend — all data is local to the device
+  ✗ No user authentication
+  ✗ No real push notifications (local only)
+  ✗ No real payment gateway (manual instructions only)
+  ✗ No web admin panel
+  ✗ Orders don't persist if the user uninstalls the app
+  ✗ No analytics or crash reporting
+
+────────────────────────────────────────────────────────────────────────────────
+
+3. IMPLEMENTATION ROADMAP
+────────────────────────────────────────────────────────────────────────────────
+
+  Work is divided into 3 sequential phases, prioritizing blocker fixes and
+  high-impact features for the Tanzanian market.
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ PHASE 1 — CRITICAL FIXES (Week 1)                                          │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │                                                                             │
+  │ 1.1  Fix useState → useEffect in HomeScreen               [src/screens/    │
+  │      Prevents unnecessary re-renders.                        HomeScreen.js] │
+  │                                                                             │
+  │ 1.2  Compress large images                                 [assets/images/ │
+  │      bg001.jpg and background.jpg to <200KB each.           *.jpg]          │
+  │                                                                             │
+  │ 1.3  Verify icon for EAS build                            [assets/icon.png]│
+  │      Ensure ./assets/icon.png exists and is valid.                          │
+  │                                                                             │
+  │ 1.4  Remove fake live tracking (placeholder map)          [OrderTracking   │
+  │      Replace with simple status timeline.                  Screen.js]       │
+  │                                                                             │
+  │ Impact: Stable, professional app ready for build.                          │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ PHASE 2 — PRODUCT-MARKET FIT (Weeks 2-4)                                   │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │                                                                             │
+  │ 2.1  Real Mobile Payments                                 [CheckoutScreen  │
+  │      Integrate AzamPay or Selcom to process M-Pesa,          .js]           │
+  │      TigoPesa and Airtel Money without manual steps.                       │
+  │                                                                             │
+  │ 2.2  Order Confirmation                                   [CheckoutScreen  │
+  │      Post-checkout screen: "Order sent, waiting for           , ordersStore]│
+  │      confirmation" with clear visual feedback.                             │
+  │                                                                             │
+  │ 2.3  Improved Admin Panel                                 [AdminDashboard  │
+  │      Daily summary with charts (chart-kit already installed). Screen.js]   │
+  │      Export today's orders.                                                 │
+  │                                                                             │
+  │ 2.4  Push Notifications (FCM)                             [notifications   │
+  │      Firebase Cloud Messaging for real notifications.       .js]            │
+  │      When admin confirms order → push to customer.                         │
+  │                                                                             │
+  │ 2.5  Product Categories                                   [vegetables.js,  │
+  │      Group by type: Leafy Greens, Tomatoes/Onions,          HomeScreen.js]  │
+  │      Spices, Seasonal. Filter by category.                                │
+  │                                                                             │
+  │ Impact: App ready for real launch with functional payments.                │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ PHASE 3 — SCALABILITY (Month 2+ once 10+ orders/day)                      │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │                                                                             │
+  │ 3.1  Firebase Backend (Firestore)                                          │
+  │      Move data off-device:                                                 │
+  │      - Real-time stock for all users                                       │
+  │      - Orders accessible from any device                                   │
+  │      - Persistent order history                                           │
+  │      - Multiple riders can see assigned orders                             │
+  │      - Firebase Analytics included                                        │
+  │                                                                             │
+  │ 3.2  Dynamic Delivery Zones                               [deliveryZones   │
+  │      Draw real coverage area on map. Calculate fee           .js]           │
+  │      automatically based on customer location.                             │
+  │                                                                             │
+  │ 3.3  Ratings & Reviews                                                     │
+  │      Post-delivery prompt: 1-5 star rating.                                │
+  │      Builds trust and social proof in the neighborhood.                    │
+  │                                                                             │
+  │ 3.4  Web Admin Panel (Vercel)                                              │
+  │      Web version of the admin dashboard to manage from                     │
+  │      any device without opening the app.                                   │
+  │                                                                             │
+  │ Impact: Professional, scalable app ready to grow.                          │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────────────────────────
+
+4. ADDITIONAL RECOMMENDATIONS
+────────────────────────────────────────────────────────────────────────────────
+
+  4.1 SECURITY
+  ────────────────────────────────────────────────────────────────────────────
+  • The admin PIN is hardcoded ("1234") — should be configurable or use
+    biometric authentication.
+  • User profile data is stored in plain text in AsyncStorage — consider
+    encryption if any sensitive data is added.
+
+  4.2 USER EXPERIENCE
+  ────────────────────────────────────────────────────────────────────────────
+  • Cart and orders are lost if the user clears app data — migrating to
+    Firebase in Phase 3 solves this.
+  • Green vegetable prices are hardcoded (600 TZS) — allow configuration
+    from the admin panel.
+  • The business WhatsApp number (255757808854) is hardcoded in
+    src/utils/whatsapp.js — move to a more accessible configuration.
+
+  4.3 PERFORMANCE
+  ────────────────────────────────────────────────────────────────────────────
+  • bg001.jpg (2.8MB) and background.jpg (1.7MB) — compress to <200KB.
+  • Consider expo-image for caching and progressive image loading.
+
+────────────────────────────────────────────────────────────────────────────────
+
+5. CONCLUSION
+────────────────────────────────────────────────────────────────────────────────
+
+  The current product is a solid MVP with:
+
+  • 17 functional screens
+  • 5 stores with persistence
+  • Full i18n (SW/EN)
+  • Working WhatsApp integration
+  • Functional admin panel
+  • Delivery zone system
+  • Mobile payment options (M-Pesa, TigoPesa, Airtel Money)
+
+  Phase 1 fixes take ~1 week and remove current blockers. Phase 2 (real
+  payments + push notifications + categories) turns the app into a
+  product ready for the Tanzanian market.
+
+  Recommendation: start with Phase 1 + mobile money (M-Pesa/TigoPesa/
+  Airtel Money) as the first sprint — fixes critical bugs and adds the
+  highest-impact feature for the local market.
+
+================================================================================
+  Document generated: June 2026
+  Project: sean-vegie-store / matosa-online-shop
+================================================================================

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>MATOSA-MY-DELIVERY-ZONES</name>
+    <description>Zones for delivery to be covered on my app</description>
+    <Style id="icon-1684-673AB7-labelson">
+      <IconStyle>
+        <color>ffb73a67</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <Style id="line-000000-1200-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-000000-1200-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-000000-1200-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-000000-1200-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-000000-1200-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Folder>
+      <name>MATOSA-DELIVERY-COVERAGE</name>
+      <Placemark>
+        <name><![CDATA[6°45'12.39"S 39°09'24.99"E]]></name>
+        <description><![CDATA[<img src="https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gx4o63_-LaefAM-rYkZ0ubU4_GP1bImElChlSahrBtqGE3B60ufZsKAU8TRXUgPqXvYOSyhLIw_iC9O9VkypQtjVa0TpI7JjDbSz8s1zSq-TK-YFfcNxlRQKJuMm5aWmRv8583co7FkJg5KnZADRMjOY9EpypdVV_Macf2lk0FNI7Kd_Tw04i2Y1Gpa3mFdhr0UboY3nad6U9HD2EEoIWvQ9Pwyq2yx5yvYzaekNNJBMwxZrHBvOTogizQ?authuser=0&fife=s16383" height="200" width="auto" /><br><br>]]></description>
+        <styleUrl>#icon-1684-673AB7-labelson</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value><![CDATA[https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gx4o63_-LaefAM-rYkZ0ubU4_GP1bImElChlSahrBtqGE3B60ufZsKAU8TRXUgPqXvYOSyhLIw_iC9O9VkypQtjVa0TpI7JjDbSz8s1zSq-TK-YFfcNxlRQKJuMm5aWmRv8583co7FkJg5KnZADRMjOY9EpypdVV_Macf2lk0FNI7Kd_Tw04i2Y1Gpa3mFdhr0UboY3nad6U9HD2EEoIWvQ9Pwyq2yx5yvYzaekNNJBMwxZrHBvOTogizQ?authuser=0&fife=s16383]]></value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            39.1569416666667,-6.75344166666667,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Line 5</name>
+        <styleUrl>#line-000000-1200-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            39.1490023,-6.7407822,0
+            39.1493027,-6.7425295,0
+            39.1488307,-6.7440638,0
+            39.1483586,-6.7460242,0
+            39.1484015,-6.7480273,0
+            39.1483586,-6.7495189,0
+            39.1482728,-6.7514367,0
+            39.1485732,-6.753184,0
+            39.1484873,-6.7544199,0
+            39.1493027,-6.7561246,0
+            39.1498177,-6.7576162,0
+            39.1503756,-6.758426,0
+            39.1510623,-6.758085,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 6</name>
+        <styleUrl>#line-000000-1200-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            39.1510623,-6.758085,0
+            39.1524785,-6.7584686,0
+            39.1532939,-6.7577015,0
+            39.1540234,-6.7582555,0
+            39.154753,-6.7583407,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 7</name>
+        <styleUrl>#line-000000-1200-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            39.154753,-6.7583407,0
+            39.1548388,-6.7559542,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 8</name>
+        <styleUrl>#line-000000-1200-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            39.1548388,-6.7559542,0
+            39.1565125,-6.7557411,0
+            39.1563409,-6.7535676,0
+            39.1577141,-6.7541642,0
+            39.1588729,-6.7538659,0
+            39.1587441,-6.7527152,0
+            39.1585295,-6.7519055,0
+            39.1581433,-6.7508827,0
+            39.1577571,-6.7500303,0
+            39.1573708,-6.7488796,0
+            39.1572421,-6.7480699,0
+            39.1575425,-6.7471749,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 9</name>
+        <styleUrl>#line-000000-1200-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            39.1575425,-6.7471749,0
+            39.1574137,-6.7455554,0
+            39.157285,-6.7446178,0
+            39.1563838,-6.7439785,0
+            39.1559546,-6.7431262,0
+            39.1556971,-6.7420607,0
+            39.1554825,-6.7408248,0
+            39.1553109,-6.7398872,0
+            39.1545813,-6.7395036,0
+            39.1538947,-6.7396315,0
+            39.153208,-6.7397593,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 10</name>
+        <styleUrl>#line-000000-1200-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            39.153208,-6.7397593,0
+            39.1524356,-6.740095,0
+            39.1513198,-6.7396262,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Line 11</name>
+        <styleUrl>#line-000000-1200-nodesc</styleUrl>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            39.1513198,-6.7396262,0
+            39.1499036,-6.7398393,0
+            39.1490023,-6.7407822,0
+            39.1493027,-6.7425295,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>
