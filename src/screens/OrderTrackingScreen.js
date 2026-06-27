@@ -31,6 +31,7 @@ export default function OrderTrackingScreen({ route, navigation }) {
   const tr = useTranslation(language);
 
   const order = useOrdersStore((s) => s.getOrderById(orderId));
+  const removeOrder = useOrdersStore((s) => s.removeOrder);
 
   if (!order) {
     return (
@@ -153,21 +154,36 @@ export default function OrderTrackingScreen({ route, navigation }) {
 
       {/* Actions */}
       <View style={styles.actionRow}>
-        <Pressable
-          style={({ pressed }) => [styles.actionBtn(t), { backgroundColor: "#25D366" }, pressed && styles.pressed]}
-          onPress={handleWhatsApp}
-        >
-          <Ionicons name="logo-whatsapp" size={18} color="#FFF" />
-          <Text style={styles.actionBtnText}>{tr("chatWithDriver")}</Text>
-        </Pressable>
+        {isCanceled ? (
+          <Pressable
+            style={({ pressed }) => [styles.actionBtn(t), { backgroundColor: "#EF4444" }, pressed && styles.pressed]}
+            onPress={() => {
+              removeOrder(order.id);
+              navigation.navigate("Home");
+            }}
+          >
+            <Ionicons name="trash-outline" size={18} color="#FFF" />
+            <Text style={styles.actionBtnText}>{tr("deleteOrder")}</Text>
+          </Pressable>
+        ) : (
+          <>
+            <Pressable
+              style={({ pressed }) => [styles.actionBtn(t), { backgroundColor: "#25D366" }, pressed && styles.pressed]}
+              onPress={handleWhatsApp}
+            >
+              <Ionicons name="logo-whatsapp" size={18} color="#FFF" />
+              <Text style={styles.actionBtnText}>{tr("chatWithDriver")}</Text>
+            </Pressable>
 
-        <Pressable
-          style={({ pressed }) => [styles.actionBtn(t), { backgroundColor: t.colors.primary }, pressed && styles.pressed]}
-          onPress={handleCall}
-        >
-          <Ionicons name="call-outline" size={18} color="#FFF" />
-          <Text style={styles.actionBtnText}>{tr("callDriver")}</Text>
-        </Pressable>
+            <Pressable
+              style={({ pressed }) => [styles.actionBtn(t), { backgroundColor: t.colors.primary }, pressed && styles.pressed]}
+              onPress={handleCall}
+            >
+              <Ionicons name="call-outline" size={18} color="#FFF" />
+              <Text style={styles.actionBtnText}>{tr("callDriver")}</Text>
+            </Pressable>
+          </>
+        )}
       </View>
     </ScrollView>
   );

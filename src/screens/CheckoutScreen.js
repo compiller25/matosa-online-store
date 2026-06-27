@@ -260,6 +260,9 @@ export default function CheckoutScreen({ navigation }) {
       paymentRef: paymentRef.trim(),
     });
 
+    // Clear cart immediately like professional ecommerce stores
+    clearCart();
+
     try {
       setSending(true);
       const ok = await openWhatsAppWithMessage({
@@ -271,10 +274,7 @@ export default function CheckoutScreen({ navigation }) {
         Alert.alert(tr("whatsappOpened"), tr("whatsappMsg"), [
           {
             text: tr("trackOrder"),
-            onPress: () => {
-              clearCart();
-              navigation.navigate("OrderTracking", { orderId });
-            },
+            onPress: () => navigation.navigate("OrderTracking", { orderId }),
           },
         ]);
       }

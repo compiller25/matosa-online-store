@@ -154,6 +154,7 @@ export const translations = {
     justNow: "Sasa hivi",
     callDriver: "Piga Simu",
     openWhatsApp: "Fungua WhatsApp",
+    deleteOrder: "Futa Oda",
 
     // Profile
     appearance: "Muonekano",
@@ -371,6 +372,7 @@ export const translations = {
     justNow: "Just now",
     callDriver: "Call Driver",
     openWhatsApp: "Open WhatsApp",
+    deleteOrder: "Delete Order",
 
     // Profile
     appearance: "Appearance",
